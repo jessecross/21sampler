@@ -1,0 +1,5 @@
+reduced_figure1_plotdata.csv just has all data <60MHz and >94MHz removed. To
+better match what the EDGES paper uses for their Extended Figure 10 with the
+parameter confidence intervals. This removes a glitch like feature at low 
+frequencies. Bit dubious to be honest. If that glitch at <60MHz isn't relevant
+why is the absorption trough.
