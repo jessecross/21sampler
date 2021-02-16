@@ -50,7 +50,7 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 ####################################################
 # Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
 # NOTE: pymultinest, dynesty & cpnest work. Ultranest & nestle have issues (AssertionError and Nan/Inf respectively). pypolychord is pypolychord...
-sampler = 'dynesty'
+sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model)
 case = 'linearised_model'
@@ -59,7 +59,7 @@ case = 'linearised_model'
 data = 'edges'
 
 # Livepoints
-livepoints = 50
+livepoints = 55
 
 
 ####################################################
