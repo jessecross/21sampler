@@ -34,7 +34,7 @@ import models
 bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
 # Read EDGES data
-nu, weight, Tsky, Tres1_EDGES, Tres2_EDGES, T_EDGES_model, T21, err = edges_data.read_edges()
+nu, weight, Tsky, Tres1_EDGES, Tres2_EDGES, T_EDGES_model, T21, err = edges.read_edges()
 
 # Linearised model parameters NOTE: Starting with just this model to test. Will expand to do other models.
 param = {'A': 0.55,
