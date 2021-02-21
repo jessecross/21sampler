@@ -130,6 +130,13 @@ elif data == 'mock':
     err = 0.01 * np.ones(N)                 # Thermal noise type of error on data the
     Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)   # Normal distribution of errors on model data to simulate real data with noise
 
+# Simulate 21cm from ARES
+elif data == 'ares':
+    nu, T21 = aressim.sim_ares()
+    N = len(nu)
+    err = 0.01 * np.ones(N)
+    Tsky = T21 + np.random.normal(0.0, err, N)
+
 
 ####################################################
 ##################### SAMPLER ######################
