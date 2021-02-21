@@ -16,6 +16,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import ares
 
+####################################################
+##################### MODELS #######################
+####################################################
+
+
 
 def sim_ares(fX, fstar):
     fX = 0.5
@@ -30,7 +35,7 @@ def sim_ares(fX, fstar):
 sim1= ares.simulations.Global21cm()
 sim1.run()
 sim1.GlobalSignature(fig=1)
-pl.show()
+plt.show()
 
 
 

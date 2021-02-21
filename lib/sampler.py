@@ -55,7 +55,7 @@ sampler = 'pymultinest'
 # Model (linearised_model, systematic_model)
 case = 'linearised_model'
 
-# Data ('edges', 'mock')
+# Data ('edges', 'mock', 'ares')
 data = 'edges'
 
 # Livepoints
@@ -132,7 +132,7 @@ elif data == 'mock':
 
 # Simulate 21cm from ARES
 elif data == 'ares':
-    nu, T21 = aressim.sim_ares()
+    nu, T21 = ares.sim_ares()
     N = len(nu)
     err = 0.01 * np.ones(N)
     Tsky = T21 + np.random.normal(0.0, err, N)
