@@ -35,6 +35,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import models                      # signal models
 import edges                       # edges data
+import ares_sim                    # ares simulations
 
 
 ####################################################
@@ -52,14 +53,14 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 # NOTE: pymultinest, dynesty & cpnest work. Ultranest & nestle have issues (AssertionError and Nan/Inf respectively). pypolychord is pypolychord...
 sampler = 'pymultinest'
 
-# Model (linearised_model, systematic_model)
+# Model (linearised_model, systematic_model, ares_model)
 case = 'linearised_model'
 
 # Data ('edges', 'mock', 'ares')
 data = 'edges'
 
 # Livepoints
-livepoints = 55
+livepoints = 70
 
 
 ####################################################
@@ -94,6 +95,10 @@ systematic_model_priors = {'A':[0.0, 1.0],
                         'a4':[4200, 4900],
                         'a5':[-1000, -800]}
 
+ares_model_priors = {'fX':[0.0, 1.0],
+                'fstar':[0.0,1.0]}
+
+
 ####################################################
 ############# MODEL & PRIOR SELECTION ##############
 ####################################################
@@ -108,6 +113,12 @@ elif case == 'systematic_model':
     model_priors = systematic_model_priors
     # Injection parameters: reference values from Hills (2018) for real edges data (and used to generate mock data)
     theta = dict(A=0.057, phi=5.74, l=12.27, a0=2625.771, a1=-4202.081, a2=8636.317, a3=-8954.631, a4=4553.795, a5=-908.957)
+
+elif case == 'ares_model':
+    model = ares_sim.model
+    model_priors = ares_model_priors
+    theta = dict(fX=0.5, fstar=0.5)
+
 
 # Convert priors to required form for bilby
 priors = dict()
@@ -132,7 +143,7 @@ elif data == 'mock':
 
 # Simulate 21cm from ARES
 elif data == 'ares':
-    nu, T21 = ares.sim_ares()
+    nu, T21 = ares_sim.simulation(**theta)
     N = len(nu)
     err = 0.01 * np.ones(N)
     Tsky = T21 + np.random.normal(0.0, err, N)
