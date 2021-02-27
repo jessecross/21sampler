@@ -1,7 +1,8 @@
 #!/usr/bin/env
 """
-Read in the EDGES data. Run to reproduce the results plotted in Bowman (2018) and EDGES Data Releases – LoCo Lab.
-Contains a function to read the EDGES data, can be used in other files.
+Two things here:
+1) Contains a function to read the EDGES data which can be used in other files (e.g. sampler.py)
+2) Run to reproduce the results plotted in Bowman (2018) and EDGES Data Releases – LoCo Lab
 
 Code built upon work by: Dr Jonathan R. Pritchard, Researcher in Cosmology and Astrostatistics at Imperial College London
 Contact: j.pritchard@imperial.ac.uk
@@ -11,10 +12,6 @@ Contact: jesse.cross17@imperial.ac.uk
 @author: Ivan Lim, MSci Physics at Imperial College London
 Contact: yi.lim17@imperial.ac.uk
 """
-
-# To do still:
-# - Make plots prettier so they can be used in reports etc.
-# - Improve the thermalNoise function so it can be used more accurately in sampler.py (study the physics behind it first)
 
 
 ####################################################
@@ -105,7 +102,7 @@ def read_edges():
 ############## PLOT EDGES RESULTS ##################
 ####################################################
 # Directory and file name
-outdir = '{}/edges2018'.format(BASE_DIR)
+outdir = '{}/edges2018/reproduced'.format(BASE_DIR)
 label = 'edges2018_plot'
 bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
@@ -118,63 +115,62 @@ rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)
 
 # Plot EDGES results to check it looks sensible and matches plots from "EDGES Data Releases – LoCo Lab"
 fig, ax = plt.subplots(nrows=3, ncols=2)
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.5, hspace=0.9)
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.5)
 
 # Subplot (a) - Tsky is the integrated sky spectrum used for the model fitting
-ax[0,0].plot(nu, Tsky, '-k')      
-ax[0,0].set_title('(a) Integrated sky spectrum', loc='left', fontweight='bold', fontsize=8)
+ax[0,0].plot(nu, Tsky, '-k', linewidth=1)      
+ax[0,0].set_title('a', loc='left', fontweight='bold', fontsize=10)
 ax[0,0].set_xticks([50,60,70,80,90,100])
-ax[0,0].set_xticklabels([50,60,70,80,90,100], fontsize=8)
+ax[0,0].set_xticklabels([50,60,70,80,90,100], fontsize=6)
 ax[0,0].set_yticks([1000, 3000, 5000])
-ax[0,0].set_yticklabels([1000, 3000, 5000], fontsize=8)
-ax[0,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
-ax[0,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
+ax[0,0].set_yticklabels([1000, 3000, 5000], fontsize=6)
+# ax[0,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
+ax[0,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=7)
 
 # Subplot (b) - Tres1 is the residuals to the best-fit foreground-only (5-term physical model)
-ax[1,0].plot(nu, Tres1, '-k')      
-ax[1,0].set_title('(b) Foreground-only residuals', loc='left', fontweight='bold', fontsize=8)
+ax[1,0].plot(nu, Tres1, '-k', linewidth=1)      
+ax[1,0].set_title('b', loc='left', fontweight='bold', fontsize=10)
 ax[1,0].set_xticks([50,60,70,80,90,100])
-ax[1,0].set_xticklabels([50,60,70,80,90,100], fontsize=8)
-ax[1,0].set_yticks([-0.3, 0, 0.3])
-ax[1,0].set_yticklabels([-0.3, 0, 0.3], fontsize=8)
-ax[1,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
-ax[1,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
-ax[1,0].text(0.8, 0.9, f'r.m.s. = {rms_Tres1} K', fontsize=6, horizontalalignment='center', verticalalignment='center', transform=ax[1,0].transAxes)
+ax[1,0].set_xticklabels([50,60,70,80,90,100], fontsize=6)
+ax[1,0].set_yticks([-0.2, 0, 0.2])
+ax[1,0].set_yticklabels([-0.2, 0, 0.2], fontsize=6)
+# ax[1,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
+ax[1,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=7)
+ax[1,0].text(0.2, 0.1, f'r.m.s. = {rms_Tres1} K', fontsize=6, horizontalalignment='center', verticalalignment='center', transform=ax[1,0].transAxes)
 
 # Subplot (c) - Tres2 is the residuals to the best-fit combined foreground and 21cm model
-ax[1,1].plot(nu, Tres2, '-k')      
-ax[1,1].set_title('(c) Foreground + 21cm residuals', loc='left', fontweight='bold', fontsize=8)
+ax[1,1].plot(nu, Tres2, '-k', linewidth=1)      
+ax[1,1].set_title('c', loc='left', fontweight='bold', fontsize=10)
 ax[1,1].set_xticks([50,60,70,80,90,100])
-ax[1,1].set_xticklabels([50,60,70,80,90,100], fontsize=8)
-ax[1,1].set_yticks([-0.3, 0, 0.3])
-ax[1,1].set_yticklabels([-0.3, 0, 0.3], fontsize=8)
-ax[1,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
-ax[1,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
-ax[1,1].text(0.8, 0.9, f'r.m.s. = {rms_Tres2} K', fontsize=6, horizontalalignment='center', verticalalignment='center', transform=ax[1,1].transAxes)
+ax[1,1].set_xticklabels([50,60,70,80,90,100], fontsize=6)
+ax[1,1].set_yticks([-0.2, 0, 0.2])
+ax[1,1].set_yticklabels([])
+# ax[1,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
+# ax[1,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
+ax[1,1].text(0.2, 0.1, f'r.m.s. = {rms_Tres2} K', fontsize=6, horizontalalignment='center', verticalalignment='center', transform=ax[1,1].transAxes)
 
 # Subplot (d) - Tmodel is the best-fit 21cm model
-ax[2,0].plot(nu, Tmodel, '-k')     
-ax[2,0].set_title('(d) 21 cm model', loc='left', fontweight='bold', fontsize=8)
+ax[2,0].plot(nu, Tmodel, '-k', linewidth=1)     
+ax[2,0].set_title('d', loc='left', fontweight='bold', fontsize=10)
 ax[2,0].set_xticks([50,60,70,80,90,100])
-ax[2,0].set_xticklabels([50,60,70,80,90,100], fontsize=8)
+ax[2,0].set_xticklabels([50,60,70,80,90,100], fontsize=6)
 ax[2,0].set_yticks([-0.6, -0.4, -0.2, 0, 0.2])
-ax[2,0].set_yticklabels([-0.6, -0.4, -0.2, 0, 0.2], fontsize=8)
-ax[2,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
-ax[2,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
+ax[2,0].set_yticklabels([-0.6, -0.4, -0.2, 0, 0.2], fontsize=6)
+ax[2,0].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=7)
+ax[2,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=7)
 
 # Subplot (e) - T21 is the combined Tmodel + Tres2
-ax[2,1].plot(nu, T21, '-k')        
-ax[2,1].set_title('(e) 21 cm model + residuals of (c)', loc='left', fontweight='bold', fontsize=8)
+ax[2,1].plot(nu, T21, '-k', linewidth=1)        
+ax[2,1].set_title('e', loc='left', fontweight='bold', fontsize=10)
 ax[2,1].set_xticks([50,60,70,80,90,100])
-ax[2,1].set_xticklabels([50,60,70,80,90,100], fontsize=8)
+ax[2,1].set_xticklabels([50,60,70,80,90,100], fontsize=6)
 ax[2,1].set_yticks([-0.6, -0.4, -0.2, 0, 0.2])
-ax[2,1].set_yticklabels([-0.6, -0.4, -0.2, 0, 0.2], fontsize=8)
-ax[2,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=8)
-ax[2,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
+ax[2,1].set_yticklabels([])
+ax[2,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=7)
+# ax[2,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
 
 # Delete empty subplot (for the aesthetic)
 fig.delaxes(ax[0,1])    
 
 # Save the plot
-fig.savefig('{}/{}.png'.format(outdir, label), dpi=300)
-
+fig.savefig('{}/{}.png'.format(outdir, label), dpi=300, bbox_inches='tight')
