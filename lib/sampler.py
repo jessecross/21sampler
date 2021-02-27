@@ -10,21 +10,6 @@ Contact: jesse.cross17@imperial.ac.uk
 @author: Ivan Lim, MSci Physics at Imperial College London
 Contact: yi.lim17@imperial.ac.uk
 """
-# To do still:
-# - Test the mock setup more rigorously
-# - Try running on HPC at Imperial, since dynesty & cpnest are too slow for >50 livepoints on laptop
-# - Integrate Ares
-# - Integrate PyGDSM
-# - Integrate plotting.py into here so that sampled parameters in their model function are plotted and saved immediatly
-# - Get Ultranest working (slice sampling mode?)
-# - Get Polychord working (work out how to install...)
-# - Get Nestle working
-# - Set up a timer for samplers and save result for comparison between
-# - Add more controls over samplers (e.g. slice, unif etc.)
-# - Add more controls over likelihoods (research to see if this is actually useful, or are gaussians always required - can't remember)
-# - Add a control for choosing to treat the error as a parameter or not
-# - Control significant figures on contour plot posteriors
-
 
 ####################################################
 #################### LIBRARIES #####################
@@ -50,7 +35,6 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 #################### CONTROLS ######################
 ####################################################
 # Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
-# NOTE: pymultinest, dynesty & cpnest work. Ultranest & nestle have issues (AssertionError and Nan/Inf respectively). pypolychord is pypolychord...
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
@@ -85,6 +69,7 @@ linearised_model_priors = {'A':[0.0, 20.0],
                         'a3':[120.0, 190.0], 
                         'a4':[11000.0, 12200.0]}
 
+# Priors taken from Jonathan's code and slightly fiddled with itertively to find a good range.
 systematic_model_priors = {'A':[0.0, 1.0],
                         'phi':[1.5 * np.pi, 2.5 * np.pi], 
                         'l':[11.0, 14.0], 
@@ -95,6 +80,7 @@ systematic_model_priors = {'A':[0.0, 1.0],
                         'a4':[4200, 4900],
                         'a5':[-1000, -800]}
 
+# Priors created for test run with ARES
 ares_model_priors = {'fX':[0.0, 1.0],
                 'fstar':[0.0,1.0]}
 
@@ -115,7 +101,7 @@ elif case == 'systematic_model':
     theta = dict(A=0.057, phi=5.74, l=12.27, a0=2625.771, a1=-4202.081, a2=8636.317, a3=-8954.631, a4=4553.795, a5=-908.957)
 
 elif case == 'ares_model':
-    model = ares_sim.model
+    model = ares_sim.model_test
     model_priors = ares_model_priors
     theta = dict(fX=0.5, fstar=0.5)
 
@@ -127,23 +113,22 @@ for k,v in model_priors.items():
 
 
 ####################################################
-###################### DATA ########################    NOTE: Will refashion this to select between 'edges', 'mock', 'ares', 'pygdsm' etc.
+###################### DATA ######################## 
 ####################################################
 # Edges data
 if data == 'edges':
     nu, weight, Tsky, Tres1, Tres2, Tmodel, T21, err = edges.read_edges()
-    # err = 1.5 * np.ones(len(nu)) #  NOTE: Nestle needs err >= 0.3 or else NaN/inf errors. UltraNest needs err >=1.5 or else AssertionError
 
 # Simulate data with a normal distribution of errors
 elif data == 'mock':
-    nu = np.linspace(50.0, 100.0)           # Frequency range
+    nu = np.linspace(50.0, 100.0)          
     N = len(nu)
-    err = 0.01 * np.ones(N)                 # Thermal noise type of error on data the
-    Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)   # Normal distribution of errors on model data to simulate real data with noise
+    err = 0.01 * np.ones(N)           
+    Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)
 
 # Simulate 21cm from ARES
 elif data == 'ares':
-    nu, T21 = ares_sim.simulation(**theta)
+    nu, T21 = ares_sim.simulation_test(**theta)
     N = len(nu)
     err = 0.01 * np.ones(N)
     Tsky = T21 + np.random.normal(0.0, err, N)
