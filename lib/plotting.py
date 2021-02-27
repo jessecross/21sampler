@@ -11,10 +11,6 @@ Contact: jesse.cross17@imperial.ac.uk
 Contact: yi.lim17@imperial.ac.uk
 """
 
-# To do still:
-# - Integrate into sampler.py so that this plots the parameters/models sampled straight away and saves them
-# - Make plots prettier so they can be used in reports etc.
-# - Redesign directory/path bits so it's easy to run on any machine (like the other files)
 
 ####################################################
 # Import Libraries
