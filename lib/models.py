@@ -12,10 +12,6 @@ Contact: jesse.cross17@imperial.ac.uk
 Contact: yi.lim17@imperial.ac.uk
 """
 
-# To do still:
-# - Refashion into class structure, separating 21cm signal from foreground signal. Include a combination method/function
-# - Add more general models for whole signal (possibly have a section for creating ares and PyGDSM models - ideally they can be spit out in a format easy to incorporate)
-# - Add the other Hills models
 
 ####################################################
 #################### LIBRARIES #####################
@@ -78,39 +74,3 @@ def systematic_model(nu, A, phi, l, a0, a1, a2, a3, a4, a5):
     Tsky = T21 + Tfg
     
     return Tsky
-
-
-class Model:
-    def __init__(self, nu):
-        self.nu = nu
-    
-    def observation(self, theta, withFG=True, withSIG=True):
-        if withFG:
-            Tfg = self.foreground(theta=theta)
-        if withSIG:
-            T21 = self.signal(theta=theta)
-        if (not withFG) and (not withSIG):
-            T21 = np.zeros(len(self.nu))
-    
-
-class Signal(Model):
-    def __init__(self, nu):
-        super().__init__()
-        self.name = '21cm signal'
-
-    def flattened_gaussian(self, A, nu0, w, tau):
-        # 21 cm Signal Model (Flattened Gaussian Profile)
-        B = (4.0 * np.power((self.nu - nu0), 2.0) / np.power(w, 2.0)) * np.log(-np.log((1.0 + np.exp(-tau))/2.0) / tau)
-        T21 = - A * (1.0 - np.exp(-tau * np.exp(B))) / (1.0 - np.exp(-tau))
-        return T21
-    
-def model_function(nu, theta):
-    return FG + SIG
-
-# Draw this out on paper before coding it - too complicated otherwise
-    
-class Foreground(Model):
-    def __init__(self, nu):
-        super().__init__()
-        self.name = 'Foreground'
-
