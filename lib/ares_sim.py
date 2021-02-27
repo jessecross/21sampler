@@ -13,10 +13,10 @@ Contact: yi.lim17@imperial.ac.uk
 ####################################################
 import os
 import numpy as np
+import math as m
 import matplotlib.pyplot as plt
 import ares
 import bilby
-import math as m
 from scipy.interpolate import interp1d
 
 ####################################################
@@ -28,10 +28,10 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)                    # Parent directory o
 ####################################################
 ##################### MODELS #######################
 ####################################################
-def simulation(fX, fstar):
+def simulation_test(fX, fstar):
     # Directory and file name
-    outdir = '{}/samples/temp'.format(BASE_DIR)
-    label = 'sim_ares'
+    outdir = '{}/samples/ares'.format(BASE_DIR)
+    label = 'simulation'
     bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
     sim = ares.simulations.Global21cm(fX=fX, fstar=fstar)
@@ -44,7 +44,7 @@ def simulation(fX, fstar):
 
     return nu_sim, T21_sim
 
-def model(nu, fX, fstar):
+def model_test(nu, fX, fstar):
     '''
     Functional form of 21cm Global signal should go here.
     '''
