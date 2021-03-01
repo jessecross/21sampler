@@ -18,10 +18,13 @@ import os
 import bilby
 import numpy as np
 import matplotlib.pyplot as plt
+from time import process_time
 import models                      # signal models
 import edges                       # edges data
 import ares_sim                    # ares simulations
 
+# Start the stopwatch / counter  
+start = process_time()
 
 ####################################################
 ###################### PATH ########################
@@ -44,7 +47,7 @@ case = 'linearised_model'
 data = 'edges'
 
 # Livepoints
-livepoints = 70
+livepoints = 2000
 
 
 ####################################################
@@ -143,3 +146,6 @@ likelihood = bilby.likelihood.GaussianLikelihood(nu, Tsky, model, err)
 # Run sampler
 result = bilby.run_sampler(likelihood=likelihood, injection_parameters=theta, sample='unif', priors=priors, 
                             sampler=sampler, nlive=livepoints, outdir=outdir, label=label, plot=True)
+
+stop = process_time()
+print("Elapsed time:", stop-start)

@@ -167,7 +167,7 @@ ax[2,1].set_xticklabels([50,60,70,80,90,100], fontsize=6)
 ax[2,1].set_yticks([-0.6, -0.4, -0.2, 0, 0.2])
 ax[2,1].set_yticklabels([])
 ax[2,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=7)
-# ax[2,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=8)
+
 
 # Delete empty subplot (for the aesthetic)
 fig.delaxes(ax[0,1])    
