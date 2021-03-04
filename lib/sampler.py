@@ -41,13 +41,13 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
-case = 'linearised_model'
+case = 'ares_model'
 
 # Data ('edges', 'mock', 'ares')
-data = 'edges'
+data = 'ares'
 
 # Livepoints
-livepoints = 2000
+livepoints = 5000
 
 
 ####################################################
@@ -61,6 +61,12 @@ bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 ####################################################
 ############### PARAMETER PRIORS ###################    NOTE: Will refashion this to associate to the model (class structure) within models.py
 ####################################################
+# Mock model parameters
+mock_priors = {'A':[0.0, 20.0],
+                        'nu0':[60.0, 90.0], 
+                        'w':[1.0, 40.0], 
+                        'tau':[0.0, 100.0]}
+
 # Priors for absorption profile as stated in Hills (2018). Foreground priors are eye-balled from their plots since no data given in Bowman (2018) or Hills (2018)
 linearised_model_priors = {'A':[0.0, 20.0],
                         'nu0':[60.0, 90.0], 
@@ -107,6 +113,11 @@ elif case == 'ares_model':
     model = ares_sim.model_test
     model_priors = ares_model_priors
     theta = dict(fX=0.5, fstar=0.5)
+
+elif case == 'mock':
+    model = models.mock
+    model_priors = mock_priors
+    theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78)
 
 
 # Convert priors to required form for bilby

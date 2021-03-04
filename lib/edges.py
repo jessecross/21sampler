@@ -115,7 +115,7 @@ rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)
 
 # Plot EDGES results to check it looks sensible and matches plots from "EDGES Data Releases – LoCo Lab"
 fig, ax = plt.subplots(nrows=3, ncols=2)
-plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.1, hspace=0.5)
+plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0.4, hspace=0.5)
 
 # Subplot (a) - Tsky is the integrated sky spectrum used for the model fitting
 ax[0,0].plot(nu, Tsky, '-k', linewidth=1)      
@@ -161,13 +161,13 @@ ax[2,0].set_ylabel(r'Temperature, $T$ [K]', fontsize=7)
 
 # Subplot (e) - T21 is the combined Tmodel + Tres2
 ax[2,1].plot(nu, T21, '-k', linewidth=1)        
-ax[2,1].set_title('e', loc='left', fontweight='bold', fontsize=10)
+# ax[2,1].set_title('e', loc='left', fontweight='bold', fontsize=10)
 ax[2,1].set_xticks([50,60,70,80,90,100])
 ax[2,1].set_xticklabels([50,60,70,80,90,100], fontsize=6)
 ax[2,1].set_yticks([-0.6, -0.4, -0.2, 0, 0.2])
-ax[2,1].set_yticklabels([])
+ax[2,1].set_yticklabels([-0.6, -0.4, -0.2, 0, 0.2], fontsize=6)
 ax[2,1].set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=7)
-
+ax[2,1].set_ylabel(r'Temperature, $T$ [K]', fontsize=7)
 
 # Delete empty subplot (for the aesthetic)
 fig.delaxes(ax[0,1])    

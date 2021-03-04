@@ -21,6 +21,21 @@ import numpy as np
 ####################################################
 ##################### MODELS #######################
 ####################################################
+def mock(nu, A, nu0, w, tau):
+    """
+    Flattened Gaussian 21cm and Linearised Foreground
+    Model as in Bowman (2018). Foreground signal - Equation (2). 21 cm signal - Equations (5) and (6).
+    Also as in Hills (2018). Foreground signal - Equation (8). 21 cm signal - Equations (2) and (3).
+    """
+    
+    # 21 cm Signal Model (Flattened Gaussian Profile)
+    B = (4.0 * np.power((nu - nu0), 2.0) / np.power(w, 2.0)) * np.log(-np.log((1.0 + np.exp(-tau))/2.0) / tau)
+    T21 = - A * (1.0 - np.exp(-tau * np.exp(B))) / (1.0 - np.exp(-tau))
+    
+    Tsky = T21
+
+    return Tsky
+
 
 def linearised_model(nu, A, nu0, w, tau, a0, a1, a2, a3, a4):
     """
