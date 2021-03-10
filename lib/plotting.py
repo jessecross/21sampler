@@ -20,14 +20,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import edges
 import models
+import sampler
 
 ####################################################
-# Fit model to EDGES data
+################## OUTPUT FORMAT ###################
 ####################################################
-# Set directory and filename
-# outdir = '/home/jcross/MSciProject/edges_bilby/Imperial/model_plots'
-# label = 'model_plots'
+label = sampler.label                                           # Plots are labelled as per the sampler/model setup
+outdir = sampler.outdir                                         # Plots are saved in the same directory as sampled data
 bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
+
+
 
 # Read EDGES data
 nu, weight, Tsky, Tres1_EDGES, Tres2_EDGES, T_EDGES_model, T21, err = edges.read_edges()
@@ -95,4 +97,4 @@ ax[1,1].text(0.8, 0.9, f'r.m.s. = {rms_Tres_lin} K', fontsize=6, horizontalalign
 fig.delaxes(ax[0,1])    
 
 # Save the plot
-fig.savefig('{}/{}_data.png'.format(outdir, label), dpi=300)
+fig.savefig('{}/{}.png'.format(outdir, label), dpi=300)
