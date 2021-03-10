@@ -18,7 +18,7 @@ Contact: yi.lim17@imperial.ac.uk
 import bilby
 import numpy as np
 import matplotlib.pyplot as plt
-import astropy.io.ascii as ascii
+import pandas as pd
 import edges
 import models
 import os
@@ -57,22 +57,18 @@ label = '{}_{}_{}_{}'.format(case, data, sampler, livepoints)
 outdir = directory + '/{}_{}/'.format(case, data) + label
 bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
-if path.exists(outdir) == False:
+if os.path.exists(outdir) == False:
     print("This directory doesn't exist. Run sampler.py with the chosen set-up first to create the data.")
     sys.exit()
 
 ####################################################
 ############### IMPORT SAMPLE DATA #################
 ####################################################
+# This is just for pymutlinest at the moment. Each sampler has its own set-up that needs to be accounted for.
+# Select posterior data file
+post_data = "{}/pm_/{}/stats.dat".format(outdir, label)
 
-if sampler.sampler == 'pymultinest':
-    # Select posterior data file
-    post_data = "{}/pm_/{}/sats.dat".format(outdir, label)
+# Read in data (as a dataframe object)
+df = pd.read_csv(post_data)
 
-    # Read in data (as a Table object)
-    data = ascii.read(post_data)
-
-else:
-    pass
-
-print(data)
+print(df)
