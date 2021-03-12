@@ -41,10 +41,10 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
-case = 'ares_model'
+case = 'linearised_model'
 
 # Data ('edges', 'mock', 'ares')
-data = 'ares'
+data = 'edges'
 
 # Livepoints
 livepoints = 5000

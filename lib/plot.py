@@ -35,7 +35,7 @@ directory = '{}/samples'.format(BASE_DIR)                           # Directory 
 ####################################################
 ################### SELECT DATA ####################
 ####################################################
-# The data mus already exist to run this. If it doesn't, run sampler.py with the chosen set-up first.
+# The data must already exist to run this. If it doesn't, run sampler.py with the chosen set-up first.
 
 # Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
 sampler = 'pymultinest'
@@ -56,6 +56,7 @@ livepoints = 5000
 label = '{}_{}_{}_{}'.format(case, data, sampler, livepoints)
 outdir = directory + '/{}_{}/'.format(case, data) + label
 bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
+print(outdir)
 
 if os.path.exists(outdir) == False:
     print("This directory doesn't exist. Run sampler.py with the chosen set-up first to create the data.")
@@ -71,4 +72,4 @@ post_data = "{}/pm_/{}/stats.dat".format(outdir, label)
 # Read in data (as a dataframe object)
 df = pd.read_csv(post_data)
 
-print(df)
+print(df[:3])

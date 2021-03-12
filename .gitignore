@@ -1,2 +1,4 @@
 .vscode/settings.json
-sampler/
+samples/
+lib/__pycache__
+TO_DO.txt
