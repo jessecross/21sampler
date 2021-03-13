@@ -68,15 +68,15 @@ mock_priors = {'A':[0.0, 20.0],
                         'tau':[0.0, 100.0]}
 
 # Priors for absorption profile as stated in Hills (2018). Foreground priors are eye-balled from their plots since no data given in Bowman (2018) or Hills (2018)
-linearised_model_priors = {'A':[0.0, 20.0],
-                        'nu0':[60.0, 90.0], 
-                        'w':[1.0, 40.0], 
-                        'tau':[0.0, 100.0], 
-                        'a0':[-11000.0, -9000.0], 
-                        'a1':[-5900.0, -5400.0], 
-                        'a2':[-1950.0, -1700.0], 
-                        'a3':[120.0, 190.0], 
-                        'a4':[11000.0, 12200.0]}
+linearised_model_priors = {'A':[[0.0, 20.0], r'$A$'],
+                        'nu0':[[60.0, 90.0], r'$\nu_{0}$'], 
+                        'w':[[1.0, 40.0], r'$w$'], 
+                        'tau':[[0.0, 100.0], r'$\tau$'], 
+                        'a0':[[-11000.0, -9000.0], r'$a_{0}$'], 
+                        'a1':[[-5900.0, -5400.0], r'$a_{1}$'], 
+                        'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
+                        'a3':[[120.0, 190.0], r'$a_{3}$'], 
+                        'a4':[[11000.0, 12200.0], r'$a_{4}$']}
 
 # Priors taken from Jonathan's code and slightly fiddled with itertively to find a good range.
 systematic_model_priors = {'A':[0.0, 1.0],
@@ -123,7 +123,7 @@ elif case == 'mock':
 # Convert priors to required form for bilby
 priors = dict()
 for k,v in model_priors.items():
-    priors[k] = bilby.core.prior.Uniform(minimum=v[0], maximum=v[1], name=k)
+    priors[k] = bilby.core.prior.Uniform(minimum=v[0][0], maximum=v[0][1], name=k, latex_label=v[1])
 
 
 ####################################################
