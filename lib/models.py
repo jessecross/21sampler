@@ -24,10 +24,10 @@ import numpy as np
 ####################################################
 model_call_counter = 0
 
-####################################################
-################## BOWMAN (2018) ###################
-####################################################
-# Bowman (2018) 21 cm Signal Model (Flattened Gaussian Profile)
+########################################################################
+# BOWMAN (2018) - Linearised Foreground with Flattened Gaussian Signal #
+########################################################################
+# 21 cm Signal Model
 def flattened_gaussian(nu, A, nu0, w, tau):
     """
     Flattened Gaussian.
@@ -40,7 +40,7 @@ def flattened_gaussian(nu, A, nu0, w, tau):
 
     return T21
 
-# Bowman (2018) Foreground Signal Model (Linearised Emission)
+# Foreground Signal Model
 def linearised_foreground(nu, a0, a1, a2, a3, a4):
     """
     Linearised Foreground.
@@ -59,7 +59,7 @@ def linearised_foreground(nu, a0, a1, a2, a3, a4):
 
     return Tfg
 
-# Bowman (2018) Combined Model (Linearised Foreground with Flattened Gaussian Signal)
+# Combined Model
 def linearised_model(nu, A, nu0, w, tau, a0, a1, a2, a3, a4):
     """
     Bowman (2018) and Hills (2018) Linearised Model with Flattened Gaussian
@@ -78,11 +78,10 @@ def linearised_model(nu, A, nu0, w, tau, a0, a1, a2, a3, a4):
     return Tsky
 
 
-
-####################################################
-################### HILLS (2018) ###################
-####################################################
-# Hills (2018) 21 cm Signal Model (Sinusoidal)
+######################################################################
+# HILLS (2018) - 5-term Polynomial Foreground with Sinusoidal Signal #
+######################################################################
+# 21 cm Signal Model (Sinusoidal)
 def sinusoidal(nu, A, phi, l):
     """
     Sine Wave. Table 1 in Hills (2018).
@@ -93,7 +92,7 @@ def sinusoidal(nu, A, phi, l):
 
     return T21
 
-# Hills (2018) Foreground Signal Model (5-term Polynomial)
+# Foreground Signal Model (5-term Polynomial)
 def five_polynomial(nu, a0, a1, a2, a3, a4, a5):
     """
     5-term Polynomial Foreground as in Hills (2018) equation (10).
@@ -111,7 +110,7 @@ def five_polynomial(nu, a0, a1, a2, a3, a4, a5):
 
     return Tfg
 
-# Hills (2018) Combined Model (5-term Polynomial Foreground with Sinusoidal Signal)
+# Combined Model
 def systematic_model(nu, A, phi, l, a0, a1, a2, a3, a4, a5):
     """
     Hills (2018) 5-term Polynomial Foreground with Sinusoidal Signal
