@@ -61,6 +61,7 @@ bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 ####################################################
 ############# MODEL & PRIOR SELECTION ##############
 ####################################################
+# Bowman (2018) and Hills (2018) Linearised Foreground with Flattened Gaussian Signal
 if case == 'linearised_model':
     model = models.linearised_model
     model_priors = {'A':[[0.0, 20.0], r'$A$'],
@@ -72,9 +73,10 @@ if case == 'linearised_model':
                     'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
                     'a3':[[120.0, 190.0], r'$a_{3}$'], 
                     'a4':[[11000.0, 12200.0], r'$a_{4}$']}
-    # Injection parameters: Hills (2018)
+    # Injection parameters as in Hills (2018)
     theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78, a0=-10111.419, a1=-5673.739, a2=-1831.621, a3=150.673, a4=11711.500)
 
+# Hills (2018) 5-term Polynomial Foreground with Sinusoidal Signal
 elif case == 'systematic_model':
     model = models.systematic_model
     model_priors = {'A':[[0.0, 1.0], r'$A$'],
@@ -86,38 +88,41 @@ elif case == 'systematic_model':
                     'a3':[[-9400, -8500], r'$a_{3}$'], 
                     'a4':[[4200, 4900], r'$a_{4}$'],
                     'a5':[[-1000, -800], r'$a_{5}$']}
-    # Injection parameters: Hills (2018)
+    
+    # Injection parameters as in Hills (2018)
     theta = dict(A=0.057, phi=5.74, l=12.27, a0=2625.771, a1=-4202.081, a2=8636.317, a3=-8954.631, a4=4553.795, a5=-908.957)
 
+# Ares Simulation Model
 elif case == 'ares_model':
     model = ares_sim.model_test
     model_priors = {'fX':[[0.0, 1.0], r'$f_{X}$'],
                     'fstar':[[0.0,1.0], r'$f_{\star}$']}
+    
     # Injection parameters: Test values
     theta = dict(fX=0.5, fstar=0.5)
 
 
-# Convert priors to required format for bilby
+# Convert priors to required format required for bilby
 priors = dict()
 for k,v in model_priors.items():
     priors[k] = bilby.core.prior.Uniform(minimum=v[0][0], maximum=v[0][1], name=k, latex_label=v[1])
 
 
 ####################################################
-###################### DATA ######################## 
+############### IMPORT/SIMULATE DATA ############### 
 ####################################################
-# Edges data
+# Import EDGES data
 if data == 'edges':
     nu, weight, Tsky, Tres1, Tres2, Tmodel, T21, err = edges.read_edges()
 
-# Simulate data with a normal distribution of errors
+# Simulate mock data using model + gaussian errors
 elif data == 'mock':
     nu = np.linspace(50.0, 100.0)          
     N = len(nu)
     err = 0.01 * np.ones(N)           
     Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)
 
-# Simulate 21cm from ARES
+# Simulate mock data using ARES + gaussian erros
 elif data == 'ares':
     nu, T21 = ares_sim.simulation_test(**theta)
     N = len(nu)
