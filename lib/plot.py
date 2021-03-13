@@ -94,8 +94,6 @@ elif case == 'systematic_model':
 elif case == 'ares_model':
     model = ares_sim.model_test
 
-elif case == 'mock':
-    model = models.mock
 
 ####################################################
 ###################### DATA ######################## 
@@ -136,7 +134,7 @@ rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)   # RMS of Bowman2018 residuals
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12,5))
 ax.tick_params(axis='both', which='major', labelsize=12) 
-ax.axhline(y=0.01, linestyle=':', color='grey', linewidth=1)
+ax.axhline(y=0.01, linestyle=':', color='grey', linewidth=1, label='Error bars')
 ax.axhline(y=-0.01, linestyle=':', color='grey', linewidth=1)
 ax.plot(nu, Tres, linestyle='-', color='black', linewidth=1, label=f'Our residuals (RMS = {rms_Tres} K)')
 ax.plot(nu, Tres2, linestyle='--', color='dimgrey', linewidth=1, label=f'Bowman et al. 2018 residuals (RMS = {rms_Tres2} K)')
