@@ -34,7 +34,7 @@ def simulation_test(fX, fstar):
     label = 'simulation'
     bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
-    sim = ares.simulations.Global21cm(fX=fX, fstar=fstar)
+    sim = ares.simulations.Global21cm(fX=fX, fstar=fstar, verbose=False)
     sim.run()
     ax, zax = sim.GlobalSignature(color='k', fig=1)
     plt.savefig('{}/{}.png'.format(outdir, label), dpi=300)
@@ -44,12 +44,19 @@ def simulation_test(fX, fstar):
 
     return nu_sim, T21_sim
 
+model_call_counter = 0
+
 def model_test(nu, fX, fstar):
     '''
     Functional form of 21cm Global signal should go here.
     '''
-    sim = ares.simulations.Global21cm(fX=fX, fstar=fstar)
+    global model_call_counter
+    model_call_counter += 1
+    print(f"i={model_call_counter}\t fX={fX}\t fstar={fstar}")
+
+    sim = ares.simulations.Global21cm(fX=fX, fstar=fstar, verbose=False)
     sim.run()
+    
     nu_mod = sim.history['nu']
     T21_mod = sim.history['dTb']
 
