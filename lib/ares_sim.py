@@ -28,6 +28,9 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)                    # Parent directory o
 ####################################################
 ##################### MODELS #######################
 ####################################################
+model_call_counter = 0
+
+
 def simulation_test(fX, fstar):
     # Directory and file name
     outdir = '{}/samples/ares'.format(BASE_DIR)
@@ -44,7 +47,7 @@ def simulation_test(fX, fstar):
 
     return nu_sim, T21_sim
 
-model_call_counter = 0
+
 
 def model_test(nu, fX, fstar):
     '''
