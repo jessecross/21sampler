@@ -59,68 +59,45 @@ bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
 
 ####################################################
-############### PARAMETER PRIORS ###################    NOTE: Will refashion this to associate to the model (class structure) within models.py
-####################################################
-# Mock model parameters
-mock_priors = {'A':[0.0, 20.0],
-                        'nu0':[60.0, 90.0], 
-                        'w':[1.0, 40.0], 
-                        'tau':[0.0, 100.0]}
-
-# Priors for absorption profile as stated in Hills (2018). Foreground priors are eye-balled from their plots since no data given in Bowman (2018) or Hills (2018)
-linearised_model_priors = {'A':[[0.0, 20.0], r'$A$'],
-                        'nu0':[[60.0, 90.0], r'$\nu_{0}$'], 
-                        'w':[[1.0, 40.0], r'$w$'], 
-                        'tau':[[0.0, 100.0], r'$\tau$'], 
-                        'a0':[[-11000.0, -9000.0], r'$a_{0}$'], 
-                        'a1':[[-5900.0, -5400.0], r'$a_{1}$'], 
-                        'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
-                        'a3':[[120.0, 190.0], r'$a_{3}$'], 
-                        'a4':[[11000.0, 12200.0], r'$a_{4}$']}
-
-# Priors taken from Jonathan's code and slightly fiddled with itertively to find a good range.
-systematic_model_priors = {'A':[0.0, 1.0],
-                        'phi':[1.5 * np.pi, 2.5 * np.pi], 
-                        'l':[11.0, 14.0], 
-                        'a0':[2500, 2700], 
-                        'a1':[-4500, -3900], 
-                        'a2':[8100, 9200], 
-                        'a3':[-9400, -8500], 
-                        'a4':[4200, 4900],
-                        'a5':[-1000, -800]}
-
-# Priors created for test run with ARES
-ares_model_priors = {'fX':[0.0, 1.0],
-                'fstar':[0.0,1.0]}
-
-
-####################################################
 ############# MODEL & PRIOR SELECTION ##############
 ####################################################
 if case == 'linearised_model':
     model = models.linearised_model
-    model_priors = linearised_model_priors
-    # Injection parameters: reference values from Hills (2018) for real edges data (and used to generate mock data)
+    model_priors = {'A':[[0.0, 20.0], r'$A$'],
+                    'nu0':[[60.0, 90.0], r'$\nu_{0}$'], 
+                    'w':[[1.0, 40.0], r'$w$'], 
+                    'tau':[[0.0, 100.0], r'$\tau$'], 
+                    'a0':[[-11000.0, -9000.0], r'$a_{0}$'], 
+                    'a1':[[-5900.0, -5400.0], r'$a_{1}$'], 
+                    'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
+                    'a3':[[120.0, 190.0], r'$a_{3}$'], 
+                    'a4':[[11000.0, 12200.0], r'$a_{4}$']}
+    # Injection parameters: Hills (2018)
     theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78, a0=-10111.419, a1=-5673.739, a2=-1831.621, a3=150.673, a4=11711.500)
 
 elif case == 'systematic_model':
     model = models.systematic_model
-    model_priors = systematic_model_priors
-    # Injection parameters: reference values from Hills (2018) for real edges data (and used to generate mock data)
+    model_priors = {'A':[[0.0, 1.0], r'$A$'],
+                    'phi':[[1.5 * np.pi, 2.5 * np.pi], r'$\phi$'], 
+                    'l':[[11.0, 14.0], r'$l$'], 
+                    'a0':[[2500, 2700], r'$a_{0}$'], 
+                    'a1':[[-4500, -3900], r'$a_{1}$'], 
+                    'a2':[[8100, 9200], r'$a_{2}$'], 
+                    'a3':[[-9400, -8500], r'$a_{3}$'], 
+                    'a4':[[4200, 4900], r'$a_{4}$'],
+                    'a5':[[-1000, -800], r'$a_{5}$']}
+    # Injection parameters: Hills (2018)
     theta = dict(A=0.057, phi=5.74, l=12.27, a0=2625.771, a1=-4202.081, a2=8636.317, a3=-8954.631, a4=4553.795, a5=-908.957)
 
 elif case == 'ares_model':
     model = ares_sim.model_test
-    model_priors = ares_model_priors
+    model_priors = {'fX':[[0.0, 1.0], r'$f_{X}$'],
+                    'fstar':[[0.0,1.0], r'$f_{\star}$']}
+    # Injection parameters: Test values
     theta = dict(fX=0.5, fstar=0.5)
 
-elif case == 'mock':
-    model = models.mock
-    model_priors = mock_priors
-    theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78)
 
-
-# Convert priors to required form for bilby
+# Convert priors to required format for bilby
 priors = dict()
 for k,v in model_priors.items():
     priors[k] = bilby.core.prior.Uniform(minimum=v[0][0], maximum=v[0][1], name=k, latex_label=v[1])
