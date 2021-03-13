@@ -121,4 +121,24 @@ elif data == 'ares':
 ####################### PLOT #######################
 ####################################################
 
-print(model(nu, *max_post_param))
+# Plot 1: Corner
+
+
+# Plot 2: Residuals
+Tsky_post = model(nu, *max_post_param)          # Model using maximum posterior parameter values
+Tres = Tsky - Tsky_post                         # Residuals = [simulated or real sky data] - [maximum posterior model]
+rms_Tres = round(np.sqrt(np.mean(Tres**2)), 3)  # RMS of our residuals
+rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)   # RMS of Bowman2018 residuals
+
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12,5))
+ax.tick_params(axis='both', which='major', labelsize=12) 
+ax.axhline(y=0.01, linestyle=':', color='grey', linewidth=1)
+ax.axhline(y=-0.01, linestyle=':', color='grey', linewidth=1)
+ax.plot(nu, Tres, linestyle='-', color='black', linewidth=1, label=f'Our residuals (RMS = {rms_Tres} K)')
+ax.plot(nu, Tres2, linestyle='--', color='dimgrey', linewidth=1, label=f'Bowman et al. 2018 residuals (RMS = {rms_Tres2} K)')
+ax.set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=12)
+ax.set_ylabel(r'Temperature, $T$ [K]', fontsize=12)
+# ax.text(0.5, 0.05, f'RMS = {rms_Tres} K', fontsize=12, horizontalalignment='center', verticalalignment='center', transform=ax.transAxes)
+ax.legend(loc='lower right', fontsize=12)
+
+fig.savefig('{}/{}_residuals.png'.format(outdir, label), dpi=300, bbox_inches='tight')
