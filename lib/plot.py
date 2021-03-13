@@ -65,11 +65,60 @@ if os.path.exists(outdir) == False:
 ####################################################
 ############### IMPORT SAMPLE DATA #################
 ####################################################
-# This is just for pymutlinest at the moment. Each sampler has its own set-up that needs to be accounted for.
-# Select posterior data file
-post_data = "{}/pm_/{}/stats.dat".format(outdir, label)
+# Read in sampelr data (as a dataframe object)
+# result = "{}/{}_result.json".format(outdir, label)
+result = bilby.result.read_in_result(outdir=outdir, label=label)
+#print(result.posterior.loc[result.posterior['log_likelihood'] == np.amax(result.posterior['log_likelihood'].values)])
+#print(result.parameter_labels)
 
-# Read in data (as a dataframe object)
-df = pd.read_csv(post_data)
+max_post_param = []
 
-print(df[:3])
+for param in result.parameter_labels:
+    print(f'{param} median is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).median)
+    print(f'{param} minus error is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).minus)
+    print(f'{param} plus error is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).plus)
+    max_post_param.append(result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).median)
+
+print(max_post_param)
+
+####################################################
+################# MODEL SELECTION ##################
+####################################################
+if case == 'linearised_model':
+    model = models.linearised_model
+
+elif case == 'systematic_model':
+    model = models.systematic_model
+
+elif case == 'ares_model':
+    model = ares_sim.model_test
+
+elif case == 'mock':
+    model = models.mock
+
+####################################################
+###################### DATA ######################## 
+####################################################
+# Edges data
+if data == 'edges':
+    nu, weight, Tsky, Tres1, Tres2, Tmodel, T21, err = edges.read_edges()
+
+# Simulate data with a normal distribution of errors
+elif data == 'mock':
+    nu = np.linspace(50.0, 100.0)          
+    N = len(nu)
+    err = 0.01 * np.ones(N)           
+    Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)
+
+# Simulate 21cm from ARES
+elif data == 'ares':
+    nu, T21 = ares_sim.simulation_test(**theta)
+    N = len(nu)
+    err = 0.01 * np.ones(N)
+    Tsky = T21 + np.random.normal(0.0, err, N)
+
+####################################################
+####################### PLOT #######################
+####################################################
+
+print(model(nu, *max_post_param))

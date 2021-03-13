@@ -41,7 +41,7 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
-case = 'linearised_model'
+case = 'systematic_model'
 
 # Data ('edges', 'mock', 'ares')
 data = 'edges'
@@ -123,7 +123,7 @@ elif case == 'mock':
 # Convert priors to required form for bilby
 priors = dict()
 for k,v in model_priors.items():
-    priors[k] = bilby.core.prior.Uniform(v[0], v[1], k)
+    priors[k] = bilby.core.prior.Uniform(minimum=v[0], maximum=v[1], name=k)
 
 
 ####################################################
