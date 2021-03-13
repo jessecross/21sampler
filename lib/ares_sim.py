@@ -56,12 +56,12 @@ def model_test(nu, fX, fstar):
 
     sim = ares.simulations.Global21cm(fX=fX, fstar=fstar, verbose=False)
     sim.run()
-    
+
     nu_mod = sim.history['nu']
     T21_mod = sim.history['dTb']
 
     f = interp1d(nu_mod, T21_mod, fill_value="extrapolate") # Create function
-    T21_model_new = f(nu)   # Create new data point from function
+    T21_model_new = f(nu)   # Create new data points from function
 
     return T21_model_new
 
