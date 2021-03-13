@@ -16,6 +16,7 @@ Contact: yi.lim17@imperial.ac.uk
 #################### LIBRARIES #####################
 ####################################################
 import bilby
+import corner
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -122,6 +123,9 @@ elif data == 'ares':
 ####################################################
 
 # Plot 1: Corner
+samples = result.samples
+labels = result.parameter_labels
+fig = corner.corner(samples, labels=labels)
 
 
 # Plot 2: Residuals
