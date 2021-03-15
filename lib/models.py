@@ -65,9 +65,9 @@ def linearised_model(nu, A, nu0, w, tau, a0, a1, a2, a3, a4):
     Bowman (2018) and Hills (2018) Linearised Model with Flattened Gaussian
     """
 
-    global model_call_counter
-    model_call_counter += 1
-    print(f"i={model_call_counter}\t A={A}\t nu0={nu0}\t w={w}\t tau={tau}\t a0={a0}\t a1={a1}\t a2={a2}\t a3={a3}\t a4={a4}")
+    # global model_call_counter
+    # model_call_counter += 1
+    # print(f"i={model_call_counter}\t A={A}\t nu0={nu0}\t w={w}\t tau={tau}\t a0={a0}\t a1={a1}\t a2={a2}\t a3={a3}\t a4={a4}")
 
     T21 = flattened_gaussian(nu, A, nu0, w, tau)
     Tfg = linearised_foreground(nu, a0, a1, a2, a3, a4)
@@ -116,9 +116,9 @@ def systematic_model(nu, A, phi, l, a0, a1, a2, a3, a4, a5):
     Hills (2018) 5-term Polynomial Foreground with Sinusoidal Signal
     """
 
-    global model_call_counter
-    model_call_counter += 1
-    print(f"i={model_call_counter}\t A={A}\t phi={phi}\t l={l}\t a0={a0}\t a1={a1}\t a2={a2}\t a3={a3}\t a4={a4}\t a5={a5}")
+    # global model_call_counter
+    # model_call_counter += 1
+    # print(f"i={model_call_counter}\t A={A}\t phi={phi}\t l={l}\t a0={a0}\t a1={a1}\t a2={a2}\t a3={a3}\t a4={a4}\t a5={a5}")
 
     T21 = sinusoidal(nu, A, phi, l)
     Tfg = five_polynomial(nu, a0, a1, a2, a3, a4, a5)
