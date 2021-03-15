@@ -47,7 +47,7 @@ case = 'linearised_model'
 data = 'edges'
 
 # Livepoints
-livepoints = 8000
+livepoints = 7000
 
 
 ####################################################
