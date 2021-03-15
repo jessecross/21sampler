@@ -48,7 +48,7 @@ case = 'linearised_model'
 data = 'edges'
 
 # Livepoints
-livepoints = 5000
+livepoints = 7000
 
 
 ####################################################
@@ -74,7 +74,7 @@ result = bilby.result.read_in_result(outdir=outdir, label=label)
 
 max_post_param = []
 
-for param in result.parameter_labels:
+for param in result.search_parameter_keys:
     print(f'{param} median is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).median)
     print(f'{param} minus error is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).minus)
     print(f'{param} plus error is:', result.get_one_dimensional_median_and_error_bar(key=[f'{param}']).plus)
@@ -121,9 +121,9 @@ elif data == 'ares':
 ####################################################
 
 # Plot 1: Corner
-samples = result.samples
-labels = result.parameter_labels
-fig = corner.corner(samples, labels=labels)
+# samples = result.samples
+# labels = result.parameter_labels
+# fig = corner.corner(samples, labels=labels)
 
 
 # Plot 2: Residuals
