@@ -17,6 +17,7 @@ import math as m
 import matplotlib.pyplot as plt
 import ares
 import bilby
+import models
 from scipy.interpolate import interp1d
 
 ####################################################
@@ -31,7 +32,7 @@ BASE_DIR = os.path.dirname(PROJECT_ROOT)                    # Parent directory o
 model_call_counter = 0
 
 
-def simulation_test(fX, fstar):
+def simulation_ares(fX, fstar):
     # Directory and file name
     outdir = '{}/samples/ares'.format(BASE_DIR)
     label = 'simulation'
@@ -49,13 +50,13 @@ def simulation_test(fX, fstar):
 
 
 
-def model_test(nu, fX, fstar):
+def model_ares(nu, fX, fstar, a0, a1, a2, a3, a4):
     '''
     Functional form of 21cm Global signal should go here.
     '''
     global model_call_counter
     model_call_counter += 1
-    print(f"i={model_call_counter}\t fX={fX}\t fstar={fstar}")
+    print(f"i={model_call_counter}\t fX={fX}\t fstar={fstar}\t a0={a0}\t a1={a1}\t a2={a2}\t a3={a3}\t a4={a4}")
 
     sim = ares.simulations.Global21cm(fX=fX, fstar=fstar, verbose=False)
     sim.run()
@@ -65,8 +66,13 @@ def model_test(nu, fX, fstar):
 
     f = interp1d(nu_mod, T21_mod, fill_value="extrapolate") # Create function
     T21_model_new = f(nu)   # Create new data points from function
+    Tfg_model_new = models.linearised_foreground(nu, a0, a1, a2, a3, a4)
 
-    return T21_model_new
+    # Combined signal
+    Tsky = T21_model_new + Tfg_model_new
+
+    return Tsky
+
 
 
 

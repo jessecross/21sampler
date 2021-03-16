@@ -39,7 +39,7 @@ directory = '{}/samples'.format(BASE_DIR)                           # Directory 
 # The data must already exist to run this. If it doesn't, run sampler.py with the chosen set-up first.
 
 # Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
-sampler = 'pymultinest'
+sampler = 'emcee'
 
 # Model (linearised_model, systematic_model, ares_model)
 case = 'linearised_model'
@@ -48,7 +48,7 @@ case = 'linearised_model'
 data = 'edges'
 
 # Livepoints
-livepoints = 7000
+livepoints = 1000
 
 
 ####################################################

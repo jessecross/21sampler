@@ -37,17 +37,17 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 ####################################################
 #################### CONTROLS ######################
 ####################################################
-# Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
+# Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord, nessai) 
 sampler = 'pymultinest'
 
-# Model (linearised_model, systematic_model, ares_model)
-case = 'linearised_model'
+# Model (linearised_model, systematic_model, ares_model_linearised)
+case = 'ares_model_linearised'
 
 # Data ('edges', 'mock', 'ares')
-data = 'edges'
+data = 'ares'
 
 # Livepoints
-livepoints = 7000
+livepoints = 100
 
 
 ####################################################
@@ -93,14 +93,18 @@ elif case == 'systematic_model':
     theta = dict(A=0.057, phi=5.74, l=12.27, a0=2625.771, a1=-4202.081, a2=8636.317, a3=-8954.631, a4=4553.795, a5=-908.957)
 
 # Ares Simulation Model
-elif case == 'ares_model':
-    model = ares_sim.model_test
+elif case == 'ares_model_linearised':
+    model = ares_sim.model_ares
     model_priors = {'fX':[[0.0, 1.0], r'$f_{X}$'],
-                    'fstar':[[0.0,1.0], r'$f_{\star}$']}
+                    'fstar':[[0.0,1.0], r'$f_{\star}$'],
+                    'a0':[[-11000.0, -9000.0], r'$a_{0}$'], 
+                    'a1':[[-5900.0, -5400.0], r'$a_{1}$'], 
+                    'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
+                    'a3':[[120.0, 190.0], r'$a_{3}$'], 
+                    'a4':[[11000.0, 12200.0], r'$a_{4}$']}
     
     # Injection parameters: Test values
-    theta = dict(fX=0.5, fstar=0.5)
-
+    theta = dict(fX=0.05, fstar=0.1, a0=-10111.419, a1=-5673.739, a2=-1831.621, a3=150.673, a4=11711.500)
 
 # Convert priors to required format required for bilby
 priors = dict()
@@ -122,12 +126,13 @@ elif data == 'mock':
     err = 0.01 * np.ones(N)           
     Tsky = model(nu, **theta) + np.random.normal(0.0, err, N)
 
-# Simulate mock data using ARES + gaussian erros
+# Simulate mock data using ARES + lienarised foreground + gaussian errors
 elif data == 'ares':
-    nu, T21 = ares_sim.simulation_test(**theta)
+    nu, T21 = ares_sim.simulation_ares(theta['fX'], theta['fstar'])
+    Tfg = (10**3) * models.linearised_foreground(nu, theta['a0'], theta['a1'], theta['a2'], theta['a3'], theta['a4'])
     N = len(nu)
-    err = 0.01 * np.ones(N)
-    Tsky = T21 + np.random.normal(0.0, err, N)
+    err = 0.01 * (10**3) * np.ones(N)
+    Tsky = T21 + Tfg + np.random.normal(0.0, err, N)
 
 
 ####################################################
@@ -138,7 +143,8 @@ likelihood = bilby.likelihood.GaussianLikelihood(nu, Tsky, model, err)
 
 # Run sampler
 result = bilby.run_sampler(likelihood=likelihood, injection_parameters=theta, sample='unif', priors=priors, 
-                            sampler=sampler, nlive=livepoints, outdir=outdir, label=label, plot=True)
+                        sampler=sampler, nlive=livepoints, outdir=outdir, label=label, plot=True, init_MPI=True)
+
 
 stop = process_time()
 print("Elapsed time:", stop-start)
