@@ -39,16 +39,16 @@ directory = '{}/samples'.format(BASE_DIR)                           # Directory 
 # The data must already exist to run this. If it doesn't, run sampler.py with the chosen set-up first.
 
 # Sampler (pymultinest, dynesty, ultranest, nestle, cpnest, pypolychord) 
-sampler = 'emcee'
+sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
-case = 'linearised_model'
+case = 'systematic_model'
 
 # Data ('edges', 'mock', 'ares')
 data = 'edges'
 
 # Livepoints
-livepoints = 1000
+livepoints = 10000
 
 
 ####################################################
@@ -124,12 +124,13 @@ elif data == 'ares':
 # samples = result.samples
 # labels = result.parameter_labels
 # fig = corner.corner(samples, labels=labels)
-
+# result.plot_corner()
 
 # Plot 2: Residuals
 Tsky_post = model(nu, *max_post_param)          # Model using maximum posterior parameter values
 Tres = Tsky - Tsky_post                         # Residuals = [simulated or real sky data] - [maximum posterior model]
 rms_Tres = round(np.sqrt(np.mean(Tres**2)), 3)  # RMS of our residuals
+print(rms_Tres)
 rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)   # RMS of Bowman2018 residuals
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12,5))
@@ -138,6 +139,7 @@ ax.axhline(y=0.01, linestyle=':', color='grey', linewidth=1, label='Error bars')
 ax.axhline(y=-0.01, linestyle=':', color='grey', linewidth=1)
 ax.plot(nu, Tres, linestyle='-', color='black', linewidth=1, label=f'Our residuals (RMS = {rms_Tres} K)')
 ax.plot(nu, Tres2, linestyle='--', color='dimgrey', linewidth=1, label=f'Bowman et al. 2018 residuals (RMS = {rms_Tres2} K)')
+ax.grid(False)
 ax.set_xlabel(r'Frequency, $\nu$ [MHz]', fontsize=12)
 ax.set_ylabel(r'Temperature, $T$ [K]', fontsize=12)
 # ax.text(0.5, 0.05, f'RMS = {rms_Tres} K', fontsize=12, horizontalalignment='center', verticalalignment='center', transform=ax.transAxes)

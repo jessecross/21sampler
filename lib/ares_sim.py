@@ -34,14 +34,14 @@ model_call_counter = 0
 
 def simulation_ares(fX, fstar):
     # Directory and file name
-    outdir = '{}/samples/ares'.format(BASE_DIR)
-    label = 'simulation'
-    bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
+    # outdir = '{}/samples/ares'.format(BASE_DIR)
+    # label = 'simulation'
+    # bilby.utils.check_directory_exists_and_if_not_mkdir(outdir)
 
     sim = ares.simulations.Global21cm(fX=fX, fstar=fstar, verbose=False)
     sim.run()
-    ax, zax = sim.GlobalSignature(color='k', fig=1)
-    plt.savefig('{}/{}.png'.format(outdir, label), dpi=300)
+    # ax, zax = sim.GlobalSignature(color='k', fig=1)
+    # plt.savefig('{}/{}.png'.format(outdir, label), dpi=300)
 
     nu_sim = sim.history['nu']
     T21_sim = sim.history['dTb']

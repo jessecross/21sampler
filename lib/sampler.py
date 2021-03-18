@@ -19,6 +19,8 @@ import bilby
 import numpy as np
 import matplotlib.pyplot as plt
 from time import process_time
+
+from pandas.core.indexing import is_label_like
 import models                      # signal models
 import edges                       # edges data
 import ares_sim                    # ares simulations
@@ -47,7 +49,7 @@ case = 'ares_model_linearised'
 data = 'ares'
 
 # Livepoints
-livepoints = 100
+livepoints = 2000
 
 
 ####################################################
@@ -143,7 +145,7 @@ likelihood = bilby.likelihood.GaussianLikelihood(nu, Tsky, model, err)
 
 # Run sampler
 result = bilby.run_sampler(likelihood=likelihood, injection_parameters=theta, sample='unif', priors=priors, 
-                        sampler=sampler, nlive=livepoints, outdir=outdir, label=label, plot=True, init_MPI=True)
+                        sampler=sampler, nlive=livepoints, outdir=outdir, label=label, plot=True)
 
 
 stop = process_time()
