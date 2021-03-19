@@ -42,13 +42,13 @@ directory = '{}/samples'.format(BASE_DIR)                           # Directory 
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model)
-case = 'systematic_model'
+case = 'linearised_model'
 
 # Data ('edges', 'mock', 'ares')
 data = 'edges'
 
 # Livepoints
-livepoints = 10000
+livepoints = 7500
 
 
 ####################################################
@@ -125,9 +125,10 @@ elif data == 'ares':
 # labels = result.parameter_labels
 # fig = corner.corner(samples, labels=labels)
 # result.plot_corner()
-
+A, nu0, w, tau, a0, a1, a2, a3, a4, sigma = max_post_param
+print(sigma)
 # Plot 2: Residuals
-Tsky_post = model(nu, *max_post_param)          # Model using maximum posterior parameter values
+Tsky_post = model(nu, A, nu0, w, tau, a0, a1, a2, a3, a4)          # Model using maximum posterior parameter values
 Tres = Tsky - Tsky_post                         # Residuals = [simulated or real sky data] - [maximum posterior model]
 rms_Tres = round(np.sqrt(np.mean(Tres**2)), 3)  # RMS of our residuals
 print(rms_Tres)
@@ -135,8 +136,8 @@ rms_Tres2 = round(np.sqrt(np.mean(Tres2**2)), 3)   # RMS of Bowman2018 residuals
 
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12,5))
 ax.tick_params(axis='both', which='major', labelsize=12) 
-ax.axhline(y=0.01, linestyle=':', color='grey', linewidth=1, label='Error bars')
-ax.axhline(y=-0.01, linestyle=':', color='grey', linewidth=1)
+ax.axhline(y=sigma, linestyle=':', color='grey', linewidth=1, label='Error bars')
+ax.axhline(y=-sigma, linestyle=':', color='grey', linewidth=1)
 ax.plot(nu, Tres, linestyle='-', color='black', linewidth=1, label=f'Our residuals (RMS = {rms_Tres} K)')
 ax.plot(nu, Tres2, linestyle='--', color='dimgrey', linewidth=1, label=f'Bowman et al. 2018 residuals (RMS = {rms_Tres2} K)')
 ax.grid(False)

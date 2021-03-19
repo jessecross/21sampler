@@ -43,13 +43,13 @@ directory = '{}/samples'.format(BASE_DIR)                   # Directory where sa
 sampler = 'pymultinest'
 
 # Model (linearised_model, systematic_model, ares_model_linearised)
-case = 'ares_model_linearised'
+case = 'systematic_model'
 
 # Data ('edges', 'mock', 'ares')
-data = 'ares'
+data = 'edges'
 
 # Livepoints
-livepoints = 2000
+livepoints = 600
 
 
 ####################################################
@@ -74,9 +74,10 @@ if case == 'linearised_model':
                     'a1':[[-5900.0, -5400.0], r'$a_{1}$'], 
                     'a2':[[-1950.0, -1700.0], r'$a_{2}$'], 
                     'a3':[[120.0, 190.0], r'$a_{3}$'], 
-                    'a4':[[11000.0, 12200.0], r'$a_{4}$']}
+                    'a4':[[11000.0, 12200.0], r'$a_{4}$'],
+                    'sigma':[[0, 1], r'$\sigma$']}
     # Injection parameters as in Hills (2018)
-    theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78, a0=-10111.419, a1=-5673.739, a2=-1831.621, a3=150.673, a4=11711.500)
+    theta = dict(A=0.553, nu0=78.31, w=18.74, tau=6.78, a0=-10111.419, a1=-5673.739, a2=-1831.621, a3=150.673, a4=11711.500, sigma=0.01)
 
 # Hills (2018) 5-term Polynomial Foreground with Sinusoidal Signal
 elif case == 'systematic_model':
