@@ -1,0 +1,39 @@
+# TODO
+
+### Notes/Known Problems
+- [ ] Ultranest doesn't run with EDGES data (AssertionError) - Jonathan suggest slice mode. (Still need to test with ARES)
+- [ ] Nestle doesn't run (Nan/Inf Error)
+- [ ] Can't install PyPolychord
+
+
+### To do generally
+- [ ] Integrate PyGDSM
+- [ ] Run EDGES with Bowman/Hills models on HPC with high livepoints to reproduce good data for report.
+- [ ] Run ARES simulated data with ARES models on HPC with high livepoints to get good data for report.
+
+
+### To do in 'sampler.py'
+- [ ] Add more controls over samplers (e.g. slice, unif etc.)
+- [ ] Timer for samplers, full run and ARES simulation. Save results.
+- [ ] Test some Mock Data runs with various samplers
+- [ ] Generalise/modularise Likelihood types selection and add a control.
+- [ ] Add control for treating the error as a parameter or not.
+- [ ] Add control for s.f. of parameters on contour plots.
+
+### To do in 'edges.py'
+- [ ] Make EDGES reproduced data plots prettier so can be used in the report.
+- [ ] Improve the thermal noise function so that it can be used more accurately.
+
+### To do in 'plotting.py'
+- [ ] Re-design directory/path of file and outputs.
+- [ ] Integrate into sampler.py so that running sampler.py will run plotting.py and produce associated plots
+- [ ] Makes plots prettier so can be used in the report.
+
+### To do in 'models.py'
+- [ ] Add other Hills models
+- [ ] Refashioning into class structure might be better (lot of effort though)
+
+### To do in 'ares_sim.py'
+- [ ] Add more simulations for different papers/model examples
+- [ ] Re-design where the simulation plots it's data
+- [ ] Re-design the plot so that it's prettier
