@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 """
 Two things here:
 1) Contains a function to read the EDGES data which can be used in other files (e.g. sampler.py)

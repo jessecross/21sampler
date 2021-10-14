@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 """
 Plotting the models and estimated parameter values to deterimine fit.
 

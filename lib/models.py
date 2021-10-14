@@ -1,4 +1,4 @@
-#!/usr/bin/env
+#!/usr/bin/env python3
 """
 Different 21 cm signal and foreground models.
 Each function defines a different model.
